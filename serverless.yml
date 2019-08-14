@@ -1,0 +1,41 @@
+service: serverless-hbs-compiler
+
+frameworkVersion: ">=v1.46.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          path: /
+          method: get
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
